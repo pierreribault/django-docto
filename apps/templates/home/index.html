@@ -10,9 +10,17 @@
     <!-- Page content -->
     <div class="container mt--8 pb-5">
       <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-7">
-          <p class="text-white">Homepage: templates/home/index.html</p>
-        </div>
+        <form action="/consulting/search" method="GET" class="col-lg-5 col-md-7">
+          <div class="input-group mb-3">
+            <input type="text" name="q" class="form-control" placeholder="Nom, spécialité, établissement...">
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="text" name="localisation" class="form-control" placeholder="Où ?">
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-4">Rechercher</button>
+        </form>
       </div>
     </div>
 

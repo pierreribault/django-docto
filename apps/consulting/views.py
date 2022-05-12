@@ -2,6 +2,7 @@ from asyncio.log import logger
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.shortcuts import redirect
 
 from apps.consulting.models import Practice
 from apps.consulting.documents import PracticeDocument
@@ -14,6 +15,9 @@ def index(request):
 def search(request):
     query = request.GET.get('q')
     localisation = request.GET.get('localisation')
+
+    if not query or not localisation:
+        return redirect('/')
 
     practices = PracticeDocument.search().query(
         'multi_match',
