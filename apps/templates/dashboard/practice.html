@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Profile {% endblock title %}
+{% block title %} Cabinet {% endblock title %}
 
 {% block content %}
 
@@ -36,20 +36,21 @@
           </div>
         </div>
         <div class="card-body">
-          <form>
+          <form method="POST" action="">
+            {% csrf_token %}
             <h6 class="heading-small text-muted mb-4">Les informations</h6>
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-practiceName">Nom du cabinet</label>
-                    <input type="text" id="input-practiceName" class="form-control" placeholder="Nom du cabinet" value="{{ request.practice.name }}" name="practiceName">
+                    {{ form.name }}
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="input-email">Adresse mail</label>
-                    <input type="email" id="input-email" class="form-control" placeholder="{{ request.practice.email }}" name="email">
+                    <label class="form-control-label" for="webSiteInput">Site internet</label>
+                    {{ form.website }}
                   </div>
                 </div>
               </div>
@@ -57,13 +58,13 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="textarea-description">Description</label>
-                    <textarea class="form-control rounded-0" id="textarea-description" rows="3"></textarea>
+                    {{ form.description }}
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="webSiteInput">Site internet</label>
-                    <input type="text" id="webSiteInput" class="form-control" placeholder="Site internet" value="{{ request.practice.zip_code }}" name="webSite">
+                    <label class="form-control-label" for="phoneInput">Numéro de téléphone</label>
+                    {{ form.phone }}
                   </div>
                 </div>
               </div>
@@ -75,8 +76,8 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label class="form-control-label" for="input-address">Adresse postal</label>
-                    <input id="input-address" class="form-control" placeholder="Adresse du cabinet" value="{{request.practice.name}}" type="text" name="address" name="address">
+                    <label class="form-control-label" for="input-address">Adresse postale</label>
+                    {{ form.address }}
                   </div>
                 </div>
               </div>
@@ -84,22 +85,26 @@
                 <div class="col-lg-4">
                   <div class="form-group">
                     <label class="form-control-label" for="input-country">Département</label>
-                    <input type="text" id="input-country" class="form-control" placeholder="Département" value="{{request.practice.state}}" name="country">
+                    {{ form.state }}
                   </div>
                 </div>
                 <div class="col-lg-4">
                   <div class="form-group">
                     <label class="form-control-label" for="input-city">Ville</label>
-                    <input type="text" id="input-city" class="form-control" placeholder="Ville" value="{{request.practice.city}}" name="city">
+                    {{ form.city }}
                   </div>
                 </div>
                 <div class="col-lg-4">
                   <div class="form-group">
                     <label class="form-control-label" for="input-country">Code postal</label>
-                    <input type="number" id="input-postal-code" class="form-control" placeholder="Code postal" value="{{request.practice.zipcode}}" name="postal">
+                    {{ form.zipcode }}
                   </div>
                 </div>
               </div>
+            </div>
+            <hr class="my-4" />
+            <div class="row justify-content-end">
+              <input type="submit" class="btn btn-primary">
             </div>
           </form>
         </div>

@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 
-from apps.dashboard.forms import ProfileForm
+from apps.dashboard.forms import PracticeForm, ProfileForm
 
 
 @login_required(login_url="/login/")
@@ -33,6 +33,23 @@ def profile(request):
             msg = "test"
 
     return render(request, "dashboard/profile.html", {"form": form, "msg": msg})
+
+@login_required(login_url="/login/")
+def practice(request):
+    form = PracticeForm(instance=request.user)
+
+    msg = None
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            msg = "oui c'est bon x2"
+        else:
+            logger.error(form.errors.as_text())
+            logger.error(form.non_field_errors().as_text())
+            msg = "test x2"
+
+    return render(request, "dashboard/practice.html", {"form": form, "msg": msg})
 
 @login_required(login_url="/login/")
 def pages(request):
