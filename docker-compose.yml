@@ -1,6 +1,23 @@
 version: "3.9"
    
 services:
+  kibana:
+    image: 'kibana:7.13.4'
+    environment:
+      - elasticsearch.hosts=http://elasticsearch:9200
+    ports:
+      - '5601:5601'
+    depends_on:
+      - elasticsearch
+  elasticsearch:
+    image: 'elasticsearch:7.13.4'
+    environment:
+        - discovery.type=single-node
+    ports:
+        - '9200:9200'
+        - '9300:9300'
+    volumes:
+        - 'elasticsearch:/usr/share/elasticsearch/data'
   db:
     image: postgres
     ports:
@@ -30,4 +47,6 @@ services:
 
 volumes:
   django-pgsql:
+    driver: local
+  elasticsearch:
     driver: local
