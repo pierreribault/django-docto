@@ -5,7 +5,8 @@ from consulting.models import Practice
 
 # Practices listing view
 def index(request):
-    return HttpResponse("Hello, world. You're at the consulting index.")
+    practice = Practice.objects.all().order_by('id') 
+    return render(request, 'practices/index.html', {'practice':practice}) 
 
 # Practice detail view
 # On affiche les services
