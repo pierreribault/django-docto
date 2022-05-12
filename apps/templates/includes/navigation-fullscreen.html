@@ -23,6 +23,7 @@
         </div>
       </div>
       <ul class="navbar-nav mr-auto">
+        {% if not user.is_authenticated %}
         <li class="nav-item">
           <a href="{% url 'login' %}" class="nav-link">
             <span class="nav-link-inner--text">Connexion</span>
@@ -33,17 +34,28 @@
             <span class="nav-link-inner--text">Créer un compte</span>
           </a>
         </li>
+        {% endif %}
       </ul>
       <hr class="d-lg-none" />
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
         <li class="nav-item d-none d-lg-block ml-lg-4">
-          <a href="https://appseed.us/admin-dashboards/django-dashboard-argon-pro" 
+          {% if not user.is_authenticated %}
+          <a href="/register" 
              target="_blank" class="btn btn-neutral btn-icon">
             <span class="btn-inner--icon">
               <i class="fas fa-rocket mr-2"></i>
             </span>
             <span class="nav-link-inner--text">Vous êtes professionel de santé ?</span>
           </a>
+          {% else %}
+          <a href="/dashboard"
+             target="_blank" class="btn btn-neutral btn-icon">
+            <span class="btn-inner--icon">
+              <i class="fas fa-rocket mr-2"></i>
+            </span>
+            <span class="nav-link-inner--text">Accéder au Dashboard</span>
+          </a>
+          {% endif %}
         </li>
       </ul>
     </div>
