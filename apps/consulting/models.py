@@ -3,7 +3,7 @@ from django.db import models
 from apps.authentication.models import User
 
 class Practice(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, unique=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
     address = models.CharField(max_length=100)

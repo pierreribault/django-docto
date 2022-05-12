@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 
-from apps.dashboard.forms import PracticeForm, ProfileForm
+from apps.dashboard.forms import PracticeForm, ProfileForm, SlotForm
 
 
 @login_required(login_url="/login/")
@@ -74,3 +74,29 @@ def pages(request):
     except:
         html_template = loader.get_template('dashboard/page-500.html')
         return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+def slot(request):
+    return render(request, "dashboard/slot.html")
+
+@login_required(login_url="/login/")
+def slot_new(request):
+    form = SlotForm(request.POST or None)
+
+    msg = None
+    success = None
+
+    practice = request.user.practice_set.first()
+
+    if request.method == "POST":
+        form.instance.practice_id = practice.id
+
+        if form.is_valid():
+            form.save()
+            msg = "Créneau ajouté correctement"
+            success = True
+        else:
+            msg = "Une erreur est survenue lors de l'ajout du créneau"
+            success = False
+
+    return render(request, "dashboard/new-slot.html", {"form": form, "msg": msg, "success": success, "practice": practice})
