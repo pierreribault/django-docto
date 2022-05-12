@@ -36,6 +36,17 @@
           </div>
         </div>
         <div class="card-body">
+          {% if success is not None %}
+            <div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body rounded-lg text-white {% if success %} bg-success {% else %} bg-danger {% endif %} ">
+                            {{ msg }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          {% endif %}
           <form method="POST" action="">
             {% csrf_token %}
             <h6 class="heading-small text-muted mb-4">Les informations</h6>

@@ -9,7 +9,6 @@ from django.urls import reverse
 
 from apps.dashboard.forms import PracticeForm, ProfileForm, SlotForm
 
-
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
@@ -19,37 +18,39 @@ def index(request):
 
 @login_required(login_url="/login/")
 def profile(request):
-    form = ProfileForm(instance=request.user)
+    form = ProfileForm(request.POST or None, instance=request.user)
 
     msg = None
+    success = None
 
     if request.method == "POST":
         if form.is_valid():
             form.save()
-            msg = "oui c'est bon"
+            msg = "Profil mis à jour avec succès."
+            success = True
         else:
-            logger.error(form.errors.as_text())
-            logger.error(form.non_field_errors().as_text())
-            msg = "test"
+            msg = "Une erreur est survenue lors de la modification du profil."
+            success = False
 
-    return render(request, "dashboard/profile.html", {"form": form, "msg": msg})
+    return render(request, "dashboard/profile.html", {"form": form, "msg": msg, "success": success})
 
 @login_required(login_url="/login/")
 def practice(request):
-    form = PracticeForm(instance=request.user)
+    form = PracticeForm(request.POST or None, instance=request.user.practice_set.first())
 
     msg = None
+    success = None
 
     if request.method == "POST":
         if form.is_valid():
             form.save()
-            msg = "oui c'est bon x2"
+            msg = "Cabinet mis à jour avec succès."
+            success = True
         else:
-            logger.error(form.errors.as_text())
-            logger.error(form.non_field_errors().as_text())
-            msg = "test x2"
+            msg = "Une erreur est survenue lors de la modification du cabinet."
+            success = False
 
-    return render(request, "dashboard/practice.html", {"form": form, "msg": msg})
+    return render(request, "dashboard/practice.html", {"form": form, "msg": msg, "success": success})
 
 @login_required(login_url="/login/")
 def pages(request):
