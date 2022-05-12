@@ -9,5 +9,3 @@
 URL: http://localhost:8000
 Admin: http://localhost:8000/admin
 Dashboard: http://localhost:8000/dashboard
-.DS_Store
-.env

@@ -14,6 +14,14 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
+def profile(request):
+    context = {'segment': 'profile'}
+
+    html_template = loader.get_template('dashboard/profile.html')
+    return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
 def pages(request):
     context = {}
     # All resource paths end in .html.

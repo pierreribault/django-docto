@@ -7,6 +7,8 @@ urlpatterns = [
     # The dashboard page
     path('', views.index, name='dashboard'),
 
+    path('profile', views.profile, name='profile'),
+
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]
