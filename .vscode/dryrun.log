@@ -1,4 +1,0 @@
-make: Entering directory `/Users/loanbesson/Projects/django-docto'
-docker-compose exec web python manage.py makemigrations
-make: Leaving directory `/Users/loanbesson/Projects/django-docto'
- 

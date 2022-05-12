@@ -77,7 +77,9 @@ def pages(request):
 
 @login_required(login_url="/login/")
 def slot(request):
-    return render(request, "dashboard/slot.html")
+    slots = request.user.practice_set.first().slot_set.all()
+
+    return render(request, "dashboard/slot.html", {"slots": slots})
 
 @login_required(login_url="/login/")
 def slot_new(request):
