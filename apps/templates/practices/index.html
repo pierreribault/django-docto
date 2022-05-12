@@ -1,0 +1,50 @@
+{% block title %}
+La liste
+{% endblock title %}
+
+{% block content %}
+<h3>Affichage de la liste</h3>
+
+<a href="#" class="">ajouter à</a>
+
+<table class="">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Nom</th>
+            <th>Slug</th>
+            <th>Adresse</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zipcode</th>
+            <th>Phone</th>
+            <th>Website</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for practice in practices %}
+        <tr>
+            <td>{{ practice.id }}</td>
+            <td>{{ practice.user }}</td>
+            <td>{{ practice.name }}</td>
+            <td>{{ practice.slug }}</td>
+            <td>{{ practice.address }}</td>
+            <td>{{ practice.city }}</td>
+            <td>{{ practice.state }}</td>
+            <td>{{ practice.zipcode }}</td>
+            <td>{{ practice.phone }}</td>
+            <td>{{ practice.website }}</td>
+            <td>{{ practice.description }}</td>
+            <td>
+                <a href="#" class="">Éditer</a>
+                <a href="#" class="">Effacer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<!--Mettez la page ici-->
+
+{% endblock content %}
