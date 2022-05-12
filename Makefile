@@ -20,3 +20,6 @@ manage:
 	@docker-compose exec web python manage.py
 sass:
 	@sass -w -q ./apps/static/assets/scss/argon.scss ./apps/static/assets/css/argon.css
+
+deps:
+	@docker-compose exec web pip install --no-cache-dir -r requirements.txt
