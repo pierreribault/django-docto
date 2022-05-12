@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from apps.dashboard.forms import PracticeForm, ProfileForm, SlotForm
 
@@ -78,7 +79,10 @@ def pages(request):
 
 @login_required(login_url="/login/")
 def slot(request):
-    slots = request.user.practice_set.first().slot_set.all()
+    slots_list = request.user.practice_set.first().slot_set.all()
+    paginator = Paginator(slots_list, 10)
+    page = request.GET.get('page')
+    slots = paginator.get_page(page)
 
     return render(request, "dashboard/slot.html", {"slots": slots})
 
