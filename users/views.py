@@ -4,5 +4,5 @@ def homepage(request):
     return render(request, 'home.html')
 
 
-def account(request):
-    return render(request, 'account.html')
+def profile(request):
+    return render(request, 'profile.html')
