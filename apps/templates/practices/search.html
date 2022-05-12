@@ -1,0 +1,35 @@
+{% extends 'layouts/base-fullscreen.html' %}
+
+{% block title %} Login {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container mt--8 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1>
+                <span class="text-white">Résultats pour</span>
+                <span style="color: #0d1930">{{ query }}</span>
+                <span class="text-white">à</span>
+                <span style="color:red">{{ localisation }}</span>
+            </h1>
+            {% for practice in practices %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ practice.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ practice.city|title }} {{ practice.zipcode }}</h6>
+                    <p class="card-text">{{ practice.description }}</p>
+                    <a href="{% url 'detail' practice_slug=practice.slug %}" class="card-link">Consulter</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}
