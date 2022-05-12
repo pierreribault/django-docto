@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
-
+from users.models import CustomUser
 class Practice(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
     address = models.CharField(max_length=100)
@@ -36,7 +36,7 @@ class Slot(models.Model):
 class Billing(models.Model):
     slot = models.ForeignKey(Slot, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100) # Stripe ID de la trasaction
     status = models.CharField(max_length=100) # Stripe status de la trasaction
     created_at = models.DateTimeField(auto_now_add=True)
