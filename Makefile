@@ -11,9 +11,11 @@ restart:
 	@docker-compose restart web
 
 fresh:
-	@rm ./*/migrations/*.py
+	@rm ./*/migrations/*.py | true
 	@docker-compose down --volumes
 	@docker-compose up -d
+	@docker-compose exec web python manage.py makemigrations users
+	@docker-compose exec web python manage.py makemigrations consulting
 
 manage:
 	@docker-compose exec web python manage.py
