@@ -3,7 +3,7 @@ from asyncio.log import logger
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.core.paginator import Paginator
@@ -82,9 +82,15 @@ def slot(request):
     slots_list = request.user.practice_set.first().slot_set.all().order_by('start_time')
     paginator = Paginator(slots_list, 10)
     page = request.GET.get('page')
+
+    if request.GET.get('delete') == 'true':
+        msg = "Créneau supprimé avec succès."
+    else:
+        msg = None
+        
     slots = paginator.get_page(page)
 
-    return render(request, "dashboard/slot.html", {"slots": slots})
+    return render(request, "dashboard/slot.html", {"slots": slots, "msg": msg})
 
 @login_required(login_url="/login/")
 def slot_new(request):
@@ -110,6 +116,5 @@ def slot_new(request):
 def slot_delete(request, slot_id):
     slot = request.user.practice_set.first().slot_set.get(id=slot_id)
     slot.delete()
-    msg = "Créneau supprimé correctement"
 
-    return slot(request)
+    return redirect('/dashboard/slot?delete=true')
