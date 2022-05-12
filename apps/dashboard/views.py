@@ -78,7 +78,7 @@ def pages(request):
 
 @login_required(login_url="/login/")
 def slot(request):
-    slots_list = request.user.practice_set.first().slot_set.all()
+    slots_list = request.user.practice_set.first().slot_set.all().order_by('start_time')
     paginator = Paginator(slots_list, 10)
     page = request.GET.get('page')
     slots = paginator.get_page(page)
@@ -88,21 +88,27 @@ def slot(request):
 @login_required(login_url="/login/")
 def slot_new(request):
     form = SlotForm(request.POST or None)
-
+    practice = request.user.practice_set.first()
     msg = None
     success = None
-
-    practice = request.user.practice_set.first()
 
     if request.method == "POST":
         form.instance.practice_id = practice.id
 
-        if form.is_valid():
+        if form.is_valid() and form.instance.start_time < form.instance.end_time:
             form.save()
             msg = "Créneau ajouté correctement"
             success = True
         else:
-            msg = "Une erreur est survenue lors de l'ajout du créneau"
+            msg = "Une erreur est survenue lors de l'ajout du créneau, assurez-vous que les dates sont correctes"
             success = False
 
     return render(request, "dashboard/new-slot.html", {"form": form, "msg": msg, "success": success, "practice": practice})
+
+@login_required(login_url="/login/")
+def slot_delete(request, slot_id):
+    slot = request.user.practice_set.first().slot_set.get(id=slot_id)
+    slot.delete()
+    msg = "Créneau supprimé correctement"
+
+    return slot(request)
