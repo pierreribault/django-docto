@@ -5,7 +5,6 @@ from django.shortcuts import get_object_or_404, render
 
 from apps.consulting.models import Practice
 from apps.consulting.documents import PracticeDocument
-from apps.consulting.proxy_paginator import ProxyPaginator
 
 # Practices listing view
 def index(request):
