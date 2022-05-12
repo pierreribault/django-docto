@@ -1,9 +1,13 @@
 
+from asyncio.log import logger
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
+
+from apps.dashboard.forms import ProfileForm
 
 
 @login_required(login_url="/login/")
@@ -15,11 +19,20 @@ def index(request):
 
 @login_required(login_url="/login/")
 def profile(request):
-    context = {'segment': 'profile'}
+    form = ProfileForm(instance=request.user)
 
-    html_template = loader.get_template('dashboard/profile.html')
-    return HttpResponse(html_template.render(context, request))
+    msg = None
 
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            msg = "oui c'est bon"
+        else:
+            logger.error(form.errors.as_text())
+            logger.error(form.non_field_errors().as_text())
+            msg = "test"
+
+    return render(request, "dashboard/profile.html", {"form": form, "msg": msg})
 
 @login_required(login_url="/login/")
 def pages(request):
