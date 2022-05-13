@@ -15,6 +15,7 @@ urlpatterns = [
     path('service', views.service, name='service'),
     path('service/new', views.service_new, name='service_new'),
     path('billing', views.billing, name='service'),
+    path('billing/<int:billing_id>/show', views.billing_show, name='billing_show'),
     path('service/<int:service_id>/delete', views.service_delete, name='service_delete'),
     path('calendar', views.calendar, name='calendar'),
 

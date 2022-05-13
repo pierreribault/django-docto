@@ -181,6 +181,13 @@ def billing(request):
 
     return render(request, "dashboard/billing.html", {"billings": billings})
 
+@login_required(login_url="/login/")
+@rule_client
+def billing_show(request, billing_id):
+    billing = request.user.billing_set.all().get(id=billing_id)
+
+    return render(request, "dashboard/show-billing.html", {"billing": billing})
+
 
 
 @login_required(login_url="/login/")
