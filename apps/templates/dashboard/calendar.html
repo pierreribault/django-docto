@@ -36,7 +36,7 @@
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
-                                <tr>
+                                <tr class="row">
                                     <th class="col-2">Lundi</th>
                                     <th class="col-2">Mardi</th>
                                     <th class="col-2">Mercredi</th>
@@ -46,13 +46,13 @@
                                 </tr>
                             </thead>
                             <tbody class="list">
-                                <tr>
+                                <tr class="row">
                                     <td class="col-2">
                                         {% for billing in billings_monday %}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="text-break">
-                                                        {{ billing.user.username }}
+                                                    <p class="text-break text-xs">
+                                                        <span class="font-weight-bold">{{ billing.user.firstname }} {{ billing.user.lastname }}</span>
                                                         <br/>
                                                         {{ billing.service.name }}
                                                     </p>
@@ -64,8 +64,8 @@
                                         {% for billing in billings_tuesday %}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="text-break">
-                                                        {{ billing.user.username }}
+                                                    <p class="text-break text-xs">
+                                                        <span class="font-weight-bold">{{ billing.user.firstname }} {{ billing.user.lastname }}</span>
                                                         <br/>
                                                         {{ billing.service.name }}
                                                     </p>
@@ -77,8 +77,8 @@
                                         {% for billing in billings_wednesday %}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="text-break">
-                                                        {{ billing.user.username }}
+                                                    <p class="text-break text-xs">
+                                                        <span class="font-weight-bold">{{ billing.user.firstname }} {{ billing.user.lastname }}</span>
                                                         <br/>
                                                         {{ billing.service.name }}
                                                     </p>
@@ -90,8 +90,8 @@
                                         {% for billing in billings_thursday %}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="text-break">
-                                                        {{ billing.user.username }}
+                                                    <p class="text-break text-xs">
+                                                        <span class="font-weight-bold">{{ billing.user.firstname }} {{ billing.user.lastname }}</span>
                                                         <br/>
                                                         {{ billing.service.name }}
                                                     </p>
@@ -103,8 +103,8 @@
                                         {% for billing in billings_friday %}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="text-break">
-                                                        {{ billing.user.username }}
+                                                    <p class="text-break text-xs">
+                                                        <span class="font-weight-bold">{{ billing.user.firstname }} {{ billing.user.lastname }}</span>
                                                         <br/>
                                                         {{ billing.service.name }}
                                                     </p>
@@ -116,8 +116,8 @@
                                         {% for billing in billings_saturday %}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="text-break">
-                                                        {{ billing.user.username }}
+                                                    <p class="text-break text-xs">
+                                                        <span class="font-weight-bold">{{ billing.user.firstname }} {{ billing.user.lastname }}</span>
                                                         <br/>
                                                         {{ billing.service.name }}
                                                     </p>
