@@ -22,47 +22,40 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'icons' in segment %} active{% endif %}"
-                           href="/dashboard/icons.html">
-                            <i class="ni ni-planet text-orange"></i>
-                            <span class="nav-link-text">Icons</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if 'map' in segment %} active{% endif %}"
-                           href="/dashboard/map.html">
-                            <i class="ni ni-pin-3 text-primary"></i>
-                            <span class="nav-link-text">Google</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {% if 'profile' in segment %} active{% endif %}"
                            href="/dashboard/profile">
                             <i class="ni ni-single-02 text-yellow"></i>
                             <span class="nav-link-text">Profile</span>
                         </a>
                     </li>
+                    {% if request.user.is_practitioner %}
                     <li class="nav-item">
                         <a class="nav-link {% if 'slot' in segment %} active{% endif %}"
                            href="/dashboard/slot">
-                            <i class="ni ni-bullet-list-67 text-default"></i>
+                            <i class="ni ni-bullet-list-67 text-primary"></i>
                             <span class="nav-link-text">Mes créneaux</span>
                         </a>
                     </li>
+                    {% endif %}
+                    {% if request.user.is_practitioner %}
                     <li class="nav-item">
                         <a class="nav-link {% if 'service' in segment %} active{% endif %}"
                            href="/dashboard/service">
-                            <i class="ni ni-hat-3 text-default"></i>
+                            <i class="ni ni-hat-3 text-info"></i>
                             <span class="nav-link-text">Mes services</span>
                         </a>
                     </li>
+                    {% endif %}
+                    {% if request.user.is_practitioner %}
                     <li class="nav-item">
                         <a class="nav-link {% if 'calendar' in segment %} active{% endif %}"
                            href="/dashboard/calendar">
-                            <i class="ni ni-calendar-grid-58 text-default"></i>
+                            <i class="ni ni-calendar-grid-58 text-danger"></i>
                             <span class="nav-link-text">Mon agenda</span>
                         </a>
                     </li>
+                    {% endif %}
+                    {% if request.user.is_practitioner %}
                     <li class="nav-item">
                         <a class="nav-link {% if 'tables' in segment %} active{% endif %}"
                            href="/dashboard/practice">
@@ -70,6 +63,7 @@
                             <span class="nav-link-text">Mon Cabinet</span>
                         </a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">
                             <i class="ni ni-user-run text-red"></i>

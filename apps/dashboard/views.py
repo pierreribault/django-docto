@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.core.paginator import Paginator
-from apps.dashboard.decorators import is_practitioner
+from apps.dashboard.decorators import rule_practitioner
 from django.db.models import Count
 from apps.consulting.models import Billing
 
@@ -43,7 +43,7 @@ def profile(request):
 
 
 @login_required(login_url="/login/")
-@is_practitioner
+@rule_practitioner
 def practice(request):
     form = PracticeForm(request.POST or None,
                         instance=request.user.practice_set.first())
@@ -89,7 +89,7 @@ def pages(request):
 
 
 @login_required(login_url="/login/")
-@is_practitioner
+@rule_practitioner
 def slot(request):
     slots_list = request.user.practice_set.first().slot_set.all().order_by('start_time')
     paginator = Paginator(slots_list, 10)
@@ -106,7 +106,7 @@ def slot(request):
 
 
 @login_required(login_url="/login/")
-@is_practitioner
+@rule_practitioner
 def slot_new(request):
     form = SlotForm(request.POST or None)
     practice = request.user.practice_set.first()
@@ -136,6 +136,7 @@ def slot_delete(request, slot_id):
 
 
 @login_required(login_url="/login/")
+@rule_practitioner
 def service(request):
     service_list = request.user.practice_set.first().service_set.all().order_by('name')
     paginator = Paginator(service_list, 10)
