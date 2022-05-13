@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.core.paginator import Paginator
-from apps.dashboard.decorators import rule_practitioner
+from apps.dashboard.decorators import rule_client, rule_practitioner
 from django.db.models import Count, Sum
 from apps.consulting.models import Billing
 
@@ -17,6 +17,11 @@ from apps.dashboard.forms import PracticeForm, ProfileForm, ServiceForm, SlotFor
 
 @login_required(login_url="/login/")
 def index(request):
+
+    slots_taken_today = 0
+    slots_taken = 0
+    slots_available = 0
+    sales = None
 
     if request.user.is_practitioner():
         slots = request.user.practice_set.first().slot_set.filter(start_time__gte=datetime.now())
@@ -31,9 +36,9 @@ def index(request):
     return HttpResponse(html_template.render({
         'segment': 'index',
         'slots_taken_today': slots_taken_today,
-        'slots_taken': slots_taken or 0,
-        'slots_available': slots_available or 0,
-        'sales': sales or None,
+        'slots_taken': slots_taken,
+        'slots_available': slots_available,
+        'sales': sales,
     }, request))
 
 
@@ -165,6 +170,17 @@ def service(request):
     services = paginator.get_page(page)
 
     return render(request, "dashboard/service.html", {"services": services, "msg": msg})
+
+@login_required(login_url="/login/")
+@rule_client
+def billing(request):
+    billing_list = request.user.billing_set.all().order_by('-created_at')
+    paginator = Paginator(billing_list, 10)
+    page = request.GET.get('page')
+    billings = paginator.get_page(page)
+
+    return render(request, "dashboard/billing.html", {"billings": billings})
+
 
 
 @login_required(login_url="/login/")
