@@ -1,0 +1,189 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+    Mon agenda
+{% endblock title %}
+{% block content %}
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item">
+                                    <a href="#"><i class="fas fa-home"></i></a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#">Calendrier</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Mon agenda</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    {% if msg is not None %}
+                        <div class="pt-3">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body rounded-lg text-white bg-success">{{ msg }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Semaine du {{ monday | date:'d/m/Y' }} au {{ saturday | date:'d/m/Y' }}</h3>
+                    </div>
+                    <!-- Light table -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="col-2">Lundi</th>
+                                    <th class="col-2">Mardi</th>
+                                    <th class="col-2">Mercredi</th>
+                                    <th class="col-2">Jeudi</th>
+                                    <th class="col-2">Vendredi</th>
+                                    <th class="col-2">Samedi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr>
+                                    <td class="col-2">
+                                        {% for billing in billings_monday %}
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="text-break">
+                                                        {{ billing.user.username }}
+                                                        <br/>
+                                                        {{ billing.service.name }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="col-2">
+                                        {% for billing in billings_tuesday %}
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="text-break">
+                                                        {{ billing.user.username }}
+                                                        <br/>
+                                                        {{ billing.service.name }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="col-2">
+                                        {% for billing in billings_wednesday %}
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="text-break">
+                                                        {{ billing.user.username }}
+                                                        <br/>
+                                                        {{ billing.service.name }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="col-2">
+                                        {% for billing in billings_thursday %}
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="text-break">
+                                                        {{ billing.user.username }}
+                                                        <br/>
+                                                        {{ billing.service.name }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="col-2">
+                                        {% for billing in billings_friday %}
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="text-break">
+                                                        {{ billing.user.username }}
+                                                        <br/>
+                                                        {{ billing.service.name }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="col-2">
+                                        {% for billing in billings_saturday %}
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="text-break">
+                                                        {{ billing.user.username }}
+                                                        <br/>
+                                                        {{ billing.service.name }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Card footer -->
+                    <div class="card-footer py-4">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-end mb-0">
+                                {% if slots.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">
+                                            <i class="fas fa-angle-left"></i>
+                                            <i class="fas fa-angle-left"></i>
+                                            <span class="sr-only">Premier</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ slots.previous_page_number }}">
+                                            <i class="fas fa-angle-left"></i>
+                                            <span class="sr-only">Précédant</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="page-item">Page {{ slots.number }} sur {{ slots.paginator.num_pages }}</li>
+                                {% if slots.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ slots.next_page_number }}">
+                                            <i class="fas fa-angle-right"></i>
+                                            <span class="sr-only">Suivant</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ slots.paginator.num_pages }}">
+                                            <i class="fas fa-angle-right"></i>
+                                            <i class="fas fa-angle-right"></i>
+                                            <span class="sr-only">Dernier</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "includes/footer.html" %}
+    </div>
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+{% endblock javascripts %}
