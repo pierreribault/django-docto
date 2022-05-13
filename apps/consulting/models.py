@@ -18,7 +18,7 @@ class Practice(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Service(models.Model):
-    practice = models.ForeignKey(Practice, on_delete=models.CASCADE)
+    practice = models.ForeignKey(Practice, unique=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.IntegerField()
