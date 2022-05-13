@@ -89,6 +89,8 @@ def createPractice(request):
             form.save()
             msg = "Cabinet créée avec succès."
             success = True
+            return redirect("/dashboard/")
+
         else:
             msg = "Une erreur est survenue lors de la création du cabinet."
             success = False
