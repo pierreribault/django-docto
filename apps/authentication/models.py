@@ -9,5 +9,4 @@ class User(AbstractUser):
     postal = models.CharField(max_length=255, blank=True)
 
     def is_practitioner(self):
-        logger.error('ici')
         return self.practice_set.first() is not None
