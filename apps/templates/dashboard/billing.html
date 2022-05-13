@@ -31,7 +31,7 @@
                                     <th scope="col" class="sort" data-sort="name">Client</th>
                                     <th scope="col" class="sort" data-sort="description">Prestation</th>
                                     <th scope="col" class="sort" data-sort="price">Prix</th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Statut de paiement</th>
                                 </tr>
                             </thead>
                             <tbody class="list">
@@ -40,7 +40,7 @@
                                         <td>{{ billing.user.first_name }} {{ billing.user.last_name }}</td>
                                         <td>{{ billing.service.name }}</td>
                                         <td>{{ billing.service.price }}</td>
-                                        <td>{% if billing.slot.status == "available" %} <i class="ni ni-check-bold text-green"></i> {% else %} <i class="ni ni-check-bold text-danger"></i>  </td>
+                                        <td>{% if billing.slot.status == "available" %} <i class="ni ni-check-bold text-green"></i> {% else %} <i class="ni ni-check-bold text-danger"> </i>{% endif %}</td>
                                         <td>
                                             <a href="/dashboard/service/{{ service.id }}/delete">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
