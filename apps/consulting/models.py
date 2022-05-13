@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.text import slugify
 from apps.authentication.models import User
 
 class Practice(models.Model):
@@ -16,6 +16,11 @@ class Practice(models.Model):
     #image = models.ImageField(upload_to='practice_images')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self,*args,**kwargs):
+        self.slug=slugify(self.name)
+        super(Practice,self).save(*args,**kwargs)
+
 
 class Service(models.Model):
     practice = models.ForeignKey(Practice, on_delete=models.CASCADE)
