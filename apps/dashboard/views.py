@@ -11,16 +11,31 @@ from django.core.paginator import Paginator
 from apps.dashboard.decorators import rule_practitioner
 from django.db.models import Count
 from apps.consulting.models import Billing
+from django.db.models import Sum
 
 from apps.dashboard.forms import PracticeForm, ProfileForm, ServiceForm, SlotForm
 
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
+
+    if request.user.is_practitioner():
+        slots = request.user.practice_set.first().slot_set.filter(start_time__gte=datetime.now())
+        slots_taken_today = slots.filter(start_time__date=datetime.now().date(), billing__isnull=False).count()
+        slots_available = slots.filter(billing=None).count()
+        slots_taken = slots.count() - slots_available
+        sales = Billing.objects.filter(slot__practice=request.user.practice_set.first()).aggregate(Sum('service__price'))['service__price__sum']
+
+        logger.warning(slots_taken_today)
 
     html_template = loader.get_template('dashboard/index.html')
-    return HttpResponse(html_template.render(context, request))
+    return HttpResponse(html_template.render({
+        'segment': 'index',
+        'slots_taken_today': slots_taken_today,
+        'slots_taken': slots_taken or 0,
+        'slots_available': slots_available or 0,
+        'sales': sales or None,
+    }, request))
 
 
 @login_required(login_url="/login/")
