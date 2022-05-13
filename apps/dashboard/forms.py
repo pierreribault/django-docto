@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from sqlite3 import Date
 from django import forms
 from apps.authentication.models import User
-from apps.consulting.models import Practice, Slot
+from apps.consulting.models import Practice, Service, Slot
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -125,6 +125,31 @@ class SlotForm(forms.ModelForm):
             'end_time': forms.NumberInput(attrs={
                 "type": "datetime-local",
                 "value": (datetime.now() + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M"),
+                "class": "form-control"
+            }),
+        }
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+
+        fields = [
+            'name',
+            'description',
+            'price',
+        ]
+
+        widgets = {
+            'name': forms.TextInput(attrs={
+                "placeholder": "Médecine générale",
+                "class": "form-control",
+            }),
+            'description': forms.Textarea(attrs={
+                "placeholder": "Description de mon service...",
+                "class": "form-control"
+            }),
+            'price': forms.NumberInput(attrs={
+                "placeholder": "Prix",
                 "class": "form-control"
             }),
         }

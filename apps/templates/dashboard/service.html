@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% block title %}
-    Mes créneaux
+    Mes services
 {% endblock title %}
 {% block content %}
     <div class="header bg-primary pb-6">
@@ -22,7 +22,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/dashboard/slot/new" class="btn btn-sm btn-neutral">Nouveau</a>
+                        <a href="/dashboard/service/new" class="btn btn-sm btn-neutral">Nouveau</a>
                         {% comment %} <a href="#" class="btn btn-sm btn-neutral">Filters</a> {% endcomment %}
                     </div>
                 </div>
@@ -45,25 +45,27 @@
                     {% endif %}
                     <!-- Card header -->
                     <div class="card-header border-0">
-                        <h3 class="mb-0">Mes créneaux</h3>
+                        <h3 class="mb-0">Mes services</h3>
                     </div>
                     <!-- Light table -->
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col" class="sort" data-sort="name">Début</th>
-                                    <th scope="col" class="sort" data-sort="budget">Fin</th>
+                                    <th scope="col" class="sort" data-sort="name">Nom</th>
+                                    <th scope="col" class="sort" data-sort="description">Description</th>
+                                    <th scope="col" class="sort" data-sort="price">Prix</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="list">
-                                {% for slot in slots %}
+                                {% for service in services %}
                                     <tr>
-                                        <td>{{ slot.start_time | date:'d/m/Y H:i' }}</td>
-                                        <td>{{ slot.end_time | date:'d/m/Y H:i' }}</td>
+                                        <td>{{ service.name }}</td>
+                                        <td>{{ service.description }}</td>
+                                        <td>{{ service.price }}</td>
                                         <td>
-                                            <a href="/dashboard/slot/{{ slot.id }}/delete">
+                                            <a href="/dashboard/service/{{ service.id }}/delete">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                      class="text-danger"
                                                      width="20px"
