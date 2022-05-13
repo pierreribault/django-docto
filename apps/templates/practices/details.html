@@ -1,1 +1,51 @@
-<p>{{ practice.name }} - Cabinet</p>
+{% extends 'layouts/base-fullscreen-page.html' %}
+
+{% block title %} Login {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container mt--8 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            
+               
+               
+            <div class="row justify-content-center"> 
+                <div class="col-12">
+                    <h2 class="title text-white" >{{ practice.name }}</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text" ><strong>L'adresse : </strong>{{ practice.addresse }} {{ practice.zipcode }} {{ practice.city }}</p>
+                            <p class="card-text" ><strong>Téléphone : </strong>{{ practice.phone }}</p>
+                            <p class="card-text" ><strong>Site web : </strong>{{ practice.website }}</p>
+                            <p class="card-text" >{{ practice.description }}</p>    
+                        </div>
+                    </div>
+                </div>  
+            </div>
+                
+            <h2 class="title text-white">Nos prestations</h2>
+            <div class="row justify-content-center"> 
+                {% for service in services %}
+                <div class="col-6">
+                    <div class="card ">
+                        <div class="card-body">
+                            <p class="card-text fw-bolder" >{{ service.name }} - La consultation</p>
+                            <p class="card-text" >{{ service.description }}</p>   
+                            <h3 class="card-text fw-bolder" >le prix de la consultation : {{ service.price }}</h3>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}
+
