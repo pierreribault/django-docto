@@ -28,6 +28,17 @@
                             <span class="nav-link-text">Profile</span>
                         </a>
                     </li>
+
+                    {% if not request.user.is_practitioner %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'billing' in segment %} active{% endif %}"
+                            href="/dashboard/billing">
+                                <i class="ni ni-single-copy-04 text-red"></i>
+                                <span class="nav-link-text">Factures</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
                     {% if request.user.is_practitioner %}
                     <li class="nav-item">
                         <a class="nav-link {% if 'slot' in segment %} active{% endif %}"

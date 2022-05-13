@@ -1,0 +1,85 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+    Mes services
+{% endblock title %}
+{% block content %}
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <h6 class="h2 text-white d-inline-block mb-0">Mes Factures</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">
+                            Facture <span class="text-blue">#{{ billing.id }}</span>
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Show billing -->
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <h4 class="mb-0">Dr. {{ billing.service.practice.user.first_name }} {{ billing.service.practice.user.last_name }}</h4>
+                                <h4 class="mb-0">{{ billing.service.practice.user.email }}</h4>
+                                <h4 class="mb-0">{{ billing.service.practice.user.phone }}</h4>
+                                <h4 class="mb-0">{{ billing.service.practice.user.address }}</h4>
+                                <h4 class="mb-0">{{ billing.service.practice.user.city }}</h4>
+                                <h4 class="mb-0">{{ billing.service.practice.user.zip_code }}</h4>
+                                <h4 class="mb-0">{{ billing.service.practice.user.country }}</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-8 mb-4">
+                                                <h4>Service :</h4>
+                                                <h4>{{ billing.service.name }}</h4>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h4>Date :</h4>
+                                                <h4>
+                                                    Le {{ billing.slot.start_time | date:'d/m/Y' }} de {{ billing.slot.start_time | date:'H:i' }} à {{ billing.slot.end_time | date:'H:i' }}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-8 mb-4">
+                                                <h4>Montant :</h4>
+                                                <h4>{{ billing.service.price }} €</h4>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h4>Statut facture :</h4>
+                                                <h4>
+                                                    {% if billing.slot.status == "available" %}
+                                                        Réglée <i class="ni ni-check-bold text-green"></i>
+                                                    {% else %}
+                                                        Non réglée <i class="ni ni-check-bold text-danger"> </i>
+                                                    {% endif %}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include "includes/footer.html" %}
+        </div>
+    {% endblock content %}
+    <!-- Specific JS goes HERE -->
+    {% block javascripts %}
+    {% endblock javascripts %}
