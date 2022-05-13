@@ -51,16 +51,18 @@ Nouveau service
                     </div>
                     {% endif %}
 
-                    {% for message in messages %}
-                    <div class="card col-12 flex flex-row align-items-center">
-                        <span class="font-bold">{{ message.user.username }}:</span>
-                        <span class="ml-2">{{ message.message }} à</span>
-                        <span class="ml-2 font-italic">{{ message.created_at|date:'Y-m-d H:i' }}</span>
+                    <div class="messages">
+                        {% for message in messages %}
+                        <div class="card col-12 flex flex-row align-items-center">
+                            <span class="font-bold">{{ message.user.username }}:</span>
+                            <span class="ml-2">{{ message.message }} à</span>
+                            <span class="ml-2 font-italic">{{ message.created_at|date:'Y-m-d H:i' }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
 
                     <h3>Envoyer un message</h3>
-                    <form action="{% url 'messenger_show' conversation_id=conversation.id  %}" method="POST">
+                    <form id="message-form" action="{% url 'messenger_show' conversation_id=conversation.id  %}" method="POST">
 
                         {% csrf_token %}
 
@@ -84,4 +86,40 @@ Nouveau service
 {% endblock content %}
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
+<script>
+
+    $('#message-form').on('submit',  (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const message = $('#message-form').find('input[name="message"]').val()
+        const crsrftoken = $('#message-form').find('input[name="csrfmiddlewaretoken"]').val()
+
+        // url = current route but with POST method
+        $.post(null, {
+            message: message,
+            csrfmiddlewaretoken: crsrftoken
+        })
+    })
+</script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+    var pusher = new Pusher('6541a18b63f2763baab6', {
+        cluster: 'eu'
+    });
+
+    var channel = pusher.subscribe("conversations-{{ conversation.id }}");
+    channel.bind('new-message', function (data) {
+        let message = ''
+
+        message += '<div class="card col-12 flex flex-row align-items-center">'
+        message += '<span class="font-bold">' + data.message.user + ':</span>'
+        message += '<span class="ml-2">' + data.message.message + ' à</span>'
+        message += '<span class="ml-2 font-italic">' + data.message.created_at + '</span>'
+        message += '</div>'
+
+        $('.messages').append(message);
+    });
+
+</script>
 {% endblock javascripts %}

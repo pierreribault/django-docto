@@ -2,6 +2,8 @@
 from asyncio.log import logger
 from datetime import datetime, timedelta
 
+import pusher
+
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -273,7 +275,22 @@ def conversation(request, conversation_id):
                 message=messageForm.cleaned_data['message'],
             )
 
-            return redirect('messenger_show', conversation_id=conversation.id)
+            pusher_client = pusher.Pusher(
+                app_id='1409043',
+                key='6541a18b63f2763baab6',
+                secret='f14d5dbe67d948768245',
+                cluster='eu',
+                ssl=True
+            )
+
+            pusher_client.trigger('conversations-' + str(conversation.id), 'new-message', {'message': {
+                'id': message.id,
+                'user': message.user.username,
+                'message': message.message,
+                'created_at': message.created_at.strftime("%d/%m/%Y %H:%M")
+            }})
+
+            return HttpResponse('')
 
     return render(request, "dashboard/conversation.html", {
         'conversation': conversation,
