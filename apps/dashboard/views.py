@@ -214,11 +214,13 @@ def service_delete(request, service_id):
 @login_required(login_url="/login/")
 def calendar(request):
 
-    page = request.GET.get('page') or ""
+    page = request.GET.get('page') or "1"
     if not page.isdigit() or int(page) < 1:
         page = 1
+    else:
+        page = int(page)
 
-    monday = datetime.today() - timedelta(days=datetime.today().weekday()) + timedelta(days=(int(page)-1)*7)
+    monday = datetime.today() - timedelta(days=datetime.today().weekday()) + timedelta(days=(page-1)*7)
     tuesday = monday + timedelta(days=1)
     wednesday = monday + timedelta(days=2)
     thursday = monday + timedelta(days=3)
@@ -234,4 +236,4 @@ def calendar(request):
 
     days = Billing.objects.values('slot__start_time__date').annotate(count=Count('slot__id')).values('slot__start_time', 'slot__end_time', 'count').order_by('slot__start_time__date')
 
-    return render(request, "dashboard/calendar.html", {"days": days, "billings_monday": billings_monday, "billings_tuesday": billings_tuesday, "billings_wednesday": billings_wednesday, "billings_thursday": billings_thursday, "billings_friday": billings_friday, "billings_saturday": billings_saturday, "monday": monday, "saturday": saturday})
+    return render(request, "dashboard/calendar.html", {"previous": page-1, "next": page+1, "days": days, "billings_monday": billings_monday, "billings_tuesday": billings_tuesday, "billings_wednesday": billings_wednesday, "billings_thursday": billings_thursday, "billings_friday": billings_friday, "billings_saturday": billings_saturday, "monday": monday, "saturday": saturday})
