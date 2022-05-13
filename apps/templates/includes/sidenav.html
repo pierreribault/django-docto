@@ -76,6 +76,13 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
+                        <a class="nav-link {% if 'messenger' in segment %} active{% endif %}"
+                           href="/dashboard/messenger">
+                            <i class="ni ni-email-83 text-blue"></i>
+                            <span class="nav-link-text">Messenger</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">
                             <i class="ni ni-user-run text-red"></i>
                             <span class="nav-link-text">Logout</span>

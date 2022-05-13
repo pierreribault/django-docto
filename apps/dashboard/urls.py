@@ -19,6 +19,10 @@ urlpatterns = [
     path('service/<int:service_id>/delete', views.service_delete, name='service_delete'),
     path('calendar', views.calendar, name='calendar'),
 
+    # Messenger
+    path('messenger', views.conversations, name='messenger_index'),
+    path('messenger/<int:conversation_id>', views.conversation, name='messenger_show'),
+
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]

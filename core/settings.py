@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'apps.authentication',
     'apps.dashboard',
     'apps.consulting',
+    'apps.messenger',
     'django_elasticsearch_dsl',
 ]
 

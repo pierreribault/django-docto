@@ -40,6 +40,28 @@
                 </div>
                 {% endfor %}
             </div>
+
+
+            <h3>Envoyer un message</h3>
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                        </div>
+                        {{ messageForm.message }}
+                    </div>
+                </div>
+                <span class="text-error">{{ messageForm.message.errors }}</span>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-4">Envoyer</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
@@ -48,4 +70,3 @@
 
 <!-- Specific JS goes HERE -->
 {% block javascripts %}{% endblock javascripts %}
-

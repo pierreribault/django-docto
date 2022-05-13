@@ -15,8 +15,9 @@ from apps.consulting import payment
 
 from apps.consulting.models import Practice
 from apps.consulting.documents import PracticeDocument
-from apps.consulting.forms import PayForm
+from apps.consulting.forms import MessageForm
 from apps.consulting.payment import Payment
+from apps.messenger.models import Conversation, Message
 
 # Practices listing view
 def index(request):
@@ -51,11 +52,27 @@ def detail(request, practice_slug):
     services = practice.service_set.all()
 
     payment = Payment()
+    messageForm = MessageForm(request.POST)
+
+    if request.method == 'POST':
+        if messageForm.is_valid():
+            conversation = Conversation.objects.get_or_create(
+                user_one=request.user,
+                user_two=practice.user,
+            )
+
+            message = Message.objects.create(
+                user=request.user,
+                conversation=conversation[0],
+                message=messageForm.cleaned_data['message'],
+            )
+
+            return redirect('messenger_index')
     
     return render(request, 'practices/details.html', {
         'practice': practice,
         'services': services,
-        #'form': form,
+        'messageForm': messageForm,
         'stripe_publishable_key': payment.publishableKey(),
     })
 

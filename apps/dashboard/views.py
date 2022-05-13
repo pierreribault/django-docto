@@ -1,18 +1,20 @@
 
 from asyncio.log import logger
 from datetime import datetime, timedelta
+
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from django.core.paginator import Paginator
 from apps.dashboard.decorators import rule_client, rule_practitioner
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Q
 from apps.consulting.models import Billing
-
 from apps.dashboard.forms import PracticeForm, ProfileForm, ServiceForm, SlotForm
+from apps.consulting.forms import MessageForm
+from apps.messenger.models import Conversation, Message
 
 
 @login_required(login_url="/login/")
@@ -244,3 +246,37 @@ def calendar(request):
     days = Billing.objects.values('slot__start_time__date').annotate(count=Count('slot__id')).values('slot__start_time', 'slot__end_time', 'count').order_by('slot__start_time__date')
 
     return render(request, "dashboard/calendar.html", {"previous": page-1, "next": page+1, "days": days, "billings_monday": billings_monday, "billings_tuesday": billings_tuesday, "billings_wednesday": billings_wednesday, "billings_thursday": billings_thursday, "billings_friday": billings_friday, "billings_saturday": billings_saturday, "monday": monday, "saturday": saturday})
+
+def conversations(request):
+    conversations = Conversation.objects.filter(Q(user_one=request.user) | Q(user_two=request.user)).order_by('updated_at')
+    
+    return render(request, 'dashboard/conversations.html', {
+        'practice': practice,
+        'conversations': conversations
+    })
+
+def conversation(request, conversation_id):
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+
+    if conversation.user_one != request.user and conversation.user_two != request.user:
+        return redirect('messenger_index')
+    
+    messages = Message.objects.filter(conversation=conversation).all()
+
+    messageForm = MessageForm(request.POST)
+
+    if request.method == 'POST':
+        if messageForm.is_valid():
+            message = Message.objects.create(
+                user=request.user,
+                conversation=conversation,
+                message=messageForm.cleaned_data['message'],
+            )
+
+            return redirect('messenger_show', conversation_id=conversation.id)
+
+    return render(request, "dashboard/conversation.html", {
+        'conversation': conversation,
+        'messages': messages,
+        'messageForm': messageForm
+    })
