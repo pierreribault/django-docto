@@ -2,6 +2,8 @@ from locale import currency
 import stripe
 from django.conf import settings
 
+from apps.consulting.models import Billing
+
 class Payment():
     apiKey = ''
 
@@ -15,10 +17,10 @@ class Payment():
           amount=amount * 100,
         )
 
-    def confirmPaymentIntent(self, paymentIntentId):
+    def confirm_payment_intent(self, paymentIntentId):
         return stripe.PaymentIntent.confirm(paymentIntentId)
 
-    def createPaymentIntent(self, amount, payment_method_id):
+    def create_payment_intent(self, amount, payment_method_id):
         return stripe.PaymentIntent.create(
           amount=amount * 100,
           currency='eur',
@@ -27,5 +29,17 @@ class Payment():
           description="Charged from DjANGO-DOCTO",
         )
 
-    def publishableKey(self):
+    def handle_successful_payment(self, capture, service, slot, user):
+        billing = Billing()
+        billing.service = service
+        billing.slot = slot
+        billing.user = user
+        billing.status = capture.status
+        billing.transaction_id = capture.id
+        billing.save()
+
+        return billing
+
+
+    def publishable_key(self):
         return settings.STRIPE_PUBLIC_KEY

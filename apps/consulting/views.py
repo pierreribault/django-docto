@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 
 from asyncio.log import logger
@@ -13,7 +14,7 @@ from django.contrib.auth import get_user_model
 import stripe
 from apps.consulting import payment
 
-from apps.consulting.models import Practice
+from apps.consulting.models import Practice, Slot
 from apps.consulting.documents import PracticeDocument
 from apps.consulting.forms import PayForm
 from apps.consulting.payment import Payment
@@ -56,7 +57,7 @@ def detail(request, practice_slug):
         'practice': practice,
         'services': services,
         'form': form,
-        'stripe_publishable_key': payment.publishableKey(),
+        'stripe_publishable_key': payment.publishable_key(),
     })
 
 def pay(request, practice_slug, service_id):
@@ -66,19 +67,24 @@ def pay(request, practice_slug, service_id):
     payment = Payment()
 
     if request.method == 'POST':
-        paymentIntent = payment.createPaymentIntent(service.price, request.POST.get('payment_method_id'))
-        paymentIntent = payment.confirmPaymentIntent(paymentIntent.id)
+        paymentIntent = payment.create_payment_intent(service.price, request.POST.get('payment_method_id'))
+        paymentIntent = payment.confirm_payment_intent(paymentIntent.id)
         capture = payment.capture(service.price, paymentIntent.id)
 
         if capture.status == 'succeeded':
-            # Create a billing
-            # Attach the slot
+            slot = Slot()
+            slot.status = 'available'
+            slot.practice = practice
+            slot.start_time = datetime.now()
+            slot.end_time = datetime.now()
+            slot.save()
+            payment.handle_successful_payment(capture, service, slot, request.user)
             return redirect('/')
 
     return render(request, 'practices/pay.html', {
         'service': service,
         'practice': practice,
-        'stripe_publishable_key': payment.publishableKey(),
+        'stripe_publishable_key': payment.publishable_key(),
     })
 
 def threeDsRedirect(request):

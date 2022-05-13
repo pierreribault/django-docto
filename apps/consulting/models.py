@@ -26,7 +26,7 @@ class Service(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Slot(models.Model):
-    practice = models.ForeignKey(Practice, on_delete=models.CASCADE)
+    practice = models.ForeignKey(Practice, unique=True, on_delete=models.CASCADE)
     status = models.CharField(max_length=100) # Available, Unavailable, Booked # A virer
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -34,7 +34,7 @@ class Slot(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Billing(models.Model):
-    slot = models.ForeignKey(Slot, on_delete=models.CASCADE)
+    slot = models.ForeignKey(Slot, unique=True, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100) # Stripe ID de la trasaction
