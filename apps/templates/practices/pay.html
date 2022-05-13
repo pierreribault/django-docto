@@ -1,17 +1,42 @@
-{% block title %}
-Payement pour {{ service.name }}
-{% endblock title %}
+{% extends 'layouts/base-fullscreen-page.html' %}
+
+{% block title %} Login {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-<h3>Payer pour {{ service.name }} </h3>
-<p>{{ payer.description }}</p>
-
 {% if user.is_authenticated %}
 <form id="pay-form" action="{% url 'pay_service' practice_slug=practice.slug service_id=service.id %}" method="post">
     {% csrf_token %}
-    <div id="card-element" class="form-control"></div>
-    <input type="hidden" name="payment_method_id" id="payment_method_id">
-    <input id="card-button" type="submit" value="Submit">
+
+    <div class="container mt--8 pb-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <h2 class="title text-white">{{ practice.name }}</h2>
+                        <p class="text-white">{{ practice.description }}</p>
+                        <div class="card" style="padding: 4px;">
+                            <form method="post" class="card-body p-5" id="pay-form">
+                                <input type="hidden" name="payment_method_id" id="payment_method_id">
+                                {% csrf_token %}
+                                <select class="form-control" id="practice-select" name="slot">
+                                    {% for slot in slots %}
+                                    <option value="{{ slot.id }}">{{ slot.start_time }} - {{ slot.end_time }}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <div id="card-element" class="form-control mt-4"></div>
+
+                                <input id="card-button" type="submit" class="btn btn-primary mt-4" value="Réserver">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 {% endif %}
 
@@ -20,7 +45,7 @@ Payement pour {{ service.name }}
 {% endblock content %}
 
 
-<!-- Specific JS goes HERE --> 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}
 <script src="https://js.stripe.com/v3/"></script>
 <script>

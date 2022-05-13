@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 
 from asyncio.log import logger
@@ -13,7 +14,7 @@ from django.contrib.auth import get_user_model
 import stripe
 from apps.consulting import payment
 
-from apps.consulting.models import Practice
+from apps.consulting.models import Billing, Practice, Slot
 from apps.consulting.documents import PracticeDocument
 from apps.consulting.forms import MessageForm
 from apps.consulting.payment import Payment
@@ -79,22 +80,38 @@ def detail(request, practice_slug):
 def pay(request, practice_slug, service_id):
     practice = get_object_or_404(Practice, slug=practice_slug)
     service = get_object_or_404(practice.service_set, id=service_id)
+    slots = practice.slot_set.filter(start_time__gte=datetime.now()).exclude(
+        status='paid'
+    )
 
     payment = Payment()
 
     if request.method == 'POST':
+        slot = get_object_or_404(Slot, id=request.POST.get('slot'))
         paymentIntent = payment.createPaymentIntent(service.price, request.POST.get('payment_method_id'))
         paymentIntent = payment.confirmPaymentIntent(paymentIntent.id)
         capture = payment.capture(service.price, paymentIntent.id)
 
         if capture.status == 'succeeded':
-            # Create a billing
-            # Attach the slot
+            billing = Billing(
+                slot=slot,
+                service=service,
+                user=request.user,
+                transaction_id=paymentIntent.id,
+                status='paid'
+            )
+
+            billing.save()
+
+            slot.status = 'paid'
+            slot.save()
+            
             return redirect('/')
 
     return render(request, 'practices/pay.html', {
         'service': service,
         'practice': practice,
+        'slots': slots,
         'stripe_publishable_key': payment.publishableKey(),
     })
 
