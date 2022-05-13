@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'apps.authentication',
     'apps.dashboard',
     'apps.consulting',
-    'django_elasticsearch_dsl'
+    'django_elasticsearch_dsl',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,7 @@ ELASTICSEARCH_DSL = {
         'hosts': 'elasticsearch:9200'
     }
 }
+
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_test_zj8MMkjlECh6PlDQ6LEQMMxB00ZVp4SAPi")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_vqUm96VYoKnbAy0QoXy6QzJ800q2JBtlCq")
+STRIPE_LIVE_MODE = False  # Change to True in production

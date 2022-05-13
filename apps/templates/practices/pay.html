@@ -1,0 +1,52 @@
+{% block title %}
+Payement pour {{ service.name }}
+{% endblock title %}
+
+{% block content %}
+<h3>Payer pour {{ service.name }} </h3>
+<p>{{ payer.description }}</p>
+
+{% if user.is_authenticated %}
+<form id="pay-form" action="{% url 'pay_service' practice_slug=practice.slug service_id=service.id %}" method="post">
+    {% csrf_token %}
+    <div id="card-element" class="form-control"></div>
+    <input type="hidden" name="payment_method_id" id="payment_method_id">
+    <input id="card-button" type="submit" value="Submit">
+</form>
+{% endif %}
+
+<!--Mettez la page ici-->
+
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('pk_test_zj8MMkjlECh6PlDQ6LEQMMxB00ZVp4SAPi');
+
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+
+    cardElement.mount('#card-element');
+
+    const cardButton = document.getElementById('card-button');
+    const paymentMethodId = document.getElementById('payment_method_id');
+
+    cardButton.addEventListener('click', async (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        const { paymentMethod, error } = await stripe.createPaymentMethod(
+            'card', cardElement
+        );
+
+        if (error) {
+            // Display "error.message" to the user...
+        } else {
+            paymentMethodId.value = paymentMethod.id;
+            document.getElementById('pay-form').submit()
+        }
+    });
+</script>
+{% endblock javascripts %}

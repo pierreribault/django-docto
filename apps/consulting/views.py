@@ -1,11 +1,22 @@
+from decimal import Decimal
+
 from asyncio.log import logger
+from logging import Logger
+import re
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.shortcuts import redirect
+from django.conf import settings
+from django.contrib.auth import get_user_model
+
+import stripe
+from apps.consulting import payment
 
 from apps.consulting.models import Practice
 from apps.consulting.documents import PracticeDocument
+from apps.consulting.forms import PayForm
+from apps.consulting.payment import Payment
 
 # Practices listing view
 def index(request):
@@ -37,7 +48,38 @@ def search(request):
 # Un bouton contacter pour avoir le système de messagerie
 def detail(request, practice_slug):
     practice = get_object_or_404(Practice, slug=practice_slug)
-    context = {
+    services = practice.service_set.all()
+
+    payment = Payment()
+    
+    return render(request, 'practices/details.html', {
         'practice': practice,
-    }
-    return render(request, 'practices/details.html', context)
+        'services': services,
+        'form': form,
+        'stripe_publishable_key': payment.publishableKey(),
+    })
+
+def pay(request, practice_slug, service_id):
+    practice = get_object_or_404(Practice, slug=practice_slug)
+    service = get_object_or_404(practice.service_set, id=service_id)
+
+    payment = Payment()
+
+    if request.method == 'POST':
+        paymentIntent = payment.createPaymentIntent(service.price, request.POST.get('payment_method_id'))
+        paymentIntent = payment.confirmPaymentIntent(paymentIntent.id)
+        capture = payment.capture(service.price, paymentIntent.id)
+
+        if capture.status == 'succeeded':
+            # Create a billing
+            # Attach the slot
+            return redirect('/')
+
+    return render(request, 'practices/pay.html', {
+        'service': service,
+        'practice': practice,
+        'stripe_publishable_key': payment.publishableKey(),
+    })
+
+def threeDsRedirect(request):
+    print('threeds')
