@@ -26,5 +26,4 @@ deps:
 	@docker-compose exec web pip install --no-cache-dir -r requirements.txt
 	
 seeder:
-	@docker-compose exec web python manage.py loaddata seed/001User.json 
-	@docker-compose exec web python manage.py loaddata seed/002Consulting.json
+	@docker-compose exec web python seed
