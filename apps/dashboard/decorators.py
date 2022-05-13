@@ -2,7 +2,7 @@ from functools import wraps
 from django.http import HttpResponseRedirect
 from apps.authentication.models import User
 
-def is_practitioner(function):
+def rule_practitioner(function):
   @wraps(function)
   def wrap(request, *args, **kwargs):
 
