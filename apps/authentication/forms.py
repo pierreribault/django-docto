@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from apps.authentication.models import User
+from apps.consulting.models import Practice
 
 
 class LoginForm(forms.Form):
