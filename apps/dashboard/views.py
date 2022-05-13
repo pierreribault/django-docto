@@ -26,6 +26,7 @@ def index(request):
     slots_taken = 0
     slots_available = 0
     sales = None
+    slots = None
 
     if request.user.is_practitioner():
         slots = request.user.practice_set.first().slot_set.filter(start_time__gte=datetime.now())
@@ -35,7 +36,8 @@ def index(request):
         sales = Billing.objects.filter(slot__practice=request.user.practice_set.first()).aggregate(Sum('service__price'))['service__price__sum']
 
         logger.warning(slots_taken_today)
-
+    else: 
+        slots = request.user.billing_set.all()
     html_template = loader.get_template('dashboard/index.html')
     return HttpResponse(html_template.render({
         'segment': 'index',
@@ -43,6 +45,7 @@ def index(request):
         'slots_taken': slots_taken,
         'slots_available': slots_available,
         'sales': sales,
+        'slots': slots
     }, request))
 
 
