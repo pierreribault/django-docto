@@ -15,3 +15,6 @@ class User(AbstractUser):
     city = models.CharField(max_length=255, blank=True)
     country = models.CharField(max_length=255, blank=True)
     postal = models.CharField(max_length=255, blank=True)
+
+    def is_practitioner(self):
+        return self.role == self.PRACTITIONER

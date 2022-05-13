@@ -55,7 +55,7 @@ def detail(request, practice_slug):
     return render(request, 'practices/details.html', {
         'practice': practice,
         'services': services,
-        'form': form,
+        #'form': form,
         'stripe_publishable_key': payment.publishableKey(),
     })
 

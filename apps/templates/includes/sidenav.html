@@ -54,6 +54,7 @@
               <span class="nav-link-text">Profile</span>
             </a>
           </li>
+          {% if request.user.is_practitioner %}
           <li class="nav-item">
             <a
               class="nav-link {% if 'slot' in segment %} active {% endif %}"
@@ -63,6 +64,8 @@
               <span class="nav-link-text">Mes créneaux</span>
             </a>
           </li>
+          {% endif %}
+          {% if request.user.is_practitioner %}
           <li class="nav-item">
             <a
               class="nav-link {% if 'tables' in segment %} active {% endif %}"
@@ -72,6 +75,7 @@
               <span class="nav-link-text">Mon Cabinet</span>
             </a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">
               <i class="ni ni-user-run text-red"></i>
@@ -83,43 +87,6 @@
         <hr class="my-3" />
         <!-- Heading -->
         <h6 class="navbar-heading p-0 text-muted">
-          <span class="docs-normal">Resources</span>
-        </h6>
-        <!-- Navigation -->
-        <ul class="navbar-nav mb-md-3">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              target="_blank"
-              href="https://appseed.us/admin-dashboards/django-dashboard-argon"
-            >
-              <i class="ni ni-archive-2"></i>
-              <span class="nav-link-text">Product Page</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              target="_blank"
-              href="https://appseed.us/admin-dashboards/django-dashboard-argon-pro"
-            >
-              <i class="ni ni-spaceship text-red"></i>
-              <span class="nav-link-text text-red">PRO Version</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a
-              class="nav-link active active-pro"
-              target="_blank"
-              href="http://appseed.us"
-            >
-              <i class="ni ni-send text-dark"></i>
-              <span class="nav-link-text">AppSeed</span>
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
   </div>

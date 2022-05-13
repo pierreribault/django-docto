@@ -14,6 +14,7 @@ fresh:
 	@rm ./apps/*/migrations/*.py | true
 	@docker-compose down --volumes
 	@docker-compose up -d
+	@docker-compose exec web pip install --no-cache-dir -r requirements.txt
 	@docker-compose exec web python manage.py makemigrations apps_authentication
 	@docker-compose exec web python manage.py makemigrations apps_consulting
 manage:

@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.core.paginator import Paginator
+from apps.dashboard.decorators import is_practitioner
 
 from apps.dashboard.forms import PracticeForm, ProfileForm, SlotForm
 
@@ -36,6 +37,7 @@ def profile(request):
     return render(request, "dashboard/profile.html", {"form": form, "msg": msg, "success": success})
 
 @login_required(login_url="/login/")
+@is_practitioner
 def practice(request):
     form = PracticeForm(request.POST or None, instance=request.user.practice_set.first())
 
@@ -78,6 +80,7 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
+@is_practitioner
 def slot(request):
     slots_list = request.user.practice_set.first().slot_set.all().order_by('start_time')
     paginator = Paginator(slots_list, 10)
@@ -93,6 +96,7 @@ def slot(request):
     return render(request, "dashboard/slot.html", {"slots": slots, "msg": msg})
 
 @login_required(login_url="/login/")
+@is_practitioner
 def slot_new(request):
     form = SlotForm(request.POST or None)
     practice = request.user.practice_set.first()
