@@ -13,3 +13,15 @@ def rule_practitioner(function):
             return HttpResponseRedirect('/')
 
   return wrap
+
+def rule_client(function):
+  @wraps(function)
+  def wrap(request, *args, **kwargs):
+
+        user = request.user
+        if not user.is_practitioner():
+             return function(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect('/')
+
+  return wrap

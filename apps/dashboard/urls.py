@@ -14,6 +14,7 @@ urlpatterns = [
     path('slot/<int:slot_id>/delete', views.slot_delete, name='slot_delete'),
     path('service', views.service, name='service'),
     path('service/new', views.service_new, name='service_new'),
+    path('billing', views.billing, name='service'),
     path('service/<int:service_id>/delete', views.service_delete, name='service_delete'),
     path('calendar', views.calendar, name='calendar'),
 
