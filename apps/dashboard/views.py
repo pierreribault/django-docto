@@ -9,9 +9,8 @@ from django.template import loader
 from django.urls import reverse
 from django.core.paginator import Paginator
 from apps.dashboard.decorators import rule_practitioner
-from django.db.models import Count
+from django.db.models import Count, Sum
 from apps.consulting.models import Billing
-from django.db.models import Sum
 
 from apps.dashboard.forms import PracticeForm, ProfileForm, ServiceForm, SlotForm
 
@@ -36,6 +35,7 @@ def index(request):
         'slots_available': slots_available or 0,
         'sales': sales or None,
     }, request))
+
 
 
 @login_required(login_url="/login/")
